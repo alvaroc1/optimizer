@@ -16,12 +16,13 @@ object OptimizerBuild extends Build {
       "commons-io"      % "commons-io" % "2.1",
       "commons-codec"   % "commons-codec" % "1.4",
       "org.scalaz"      %% "scalaz-core" % "6.0.4",
-      "com.google.closure-stylesheets" % "closure-stylesheets" % "0.1-SNAPSHOT"
+      "com.google.closure-stylesheets" % "closure-stylesheets" % "0.0.2-SNAPSHOT"
     ),
     resolvers ++= Seq(
-      "gravitydev" at "http://local.gravitydev.com/app/repos/12"
+      "gravitydev" at "http://repos.gravitydev.com/app/repos/12"
     ),
-    publishTo := Some( Resolver.sftp("GravityDev Repo", "knowledgehead.com", "/www/sites/repo.gravitydev.com") ),
+    publishTo := Some( "gravitydev" at "http://repos.gravitydev.com/app/repos/12" ),
     publishArtifact in (Compile, packageDoc) := false
   )
 }
+
