@@ -8,7 +8,7 @@ object OptimizerBuild extends Build {
     base = file(".")
   ).settings(
     organization := "com.gravitydev",
-    version := "0.1.0",
+    version := "0.1.1",
     libraryDependencies ++= Seq(
       "org.scalatest"   %% "scalatest" % "1.7.1" % "test",
       "joda-time"       % "joda-time" % "2.0",

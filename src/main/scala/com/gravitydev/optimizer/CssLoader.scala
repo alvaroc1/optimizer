@@ -2,27 +2,26 @@ package com.gravitydev.optimizer
 
 import scala.collection.JavaConversions._
 import org.apache.commons.io.FileUtils
-import org.apache.commons.codec.digest.DigestUtils
 import com.google.common.css.JobDescriptionBuilder
 import com.google.common.css.SourceCode
 import com.google.common.css.compiler.ast.{GssParser, BasicErrorManager}
 import com.google.common.css.compiler.passes.{PassRunner, CompactPrinter, PrettyPrinter}
 import java.io.{File, FileOutputStream, OutputStreamWriter}
     
-class CssLoader (optimize: Boolean, assumeCompiled: Boolean, outputDir: String, includePath: String, 
+class CssLoader (optimize: Boolean, assumeCompiled: Boolean, sourceDirFn: String => String, outputDir: String, includePath: String, 
     cacheBuster: String, logger: AnyRef => Unit) {
   
   def includeStyles (styles: List[String]) = {
     import java.io.{File, FileOutputStream, OutputStreamWriter}
     
     if (optimize) {
-      val compiledCssName = DigestUtils.md5Hex(styles.mkString(";"))
+      val compiledCssName = styles.mkString(";").hashCode.toHexString
               
       if (!assumeCompiled) {
         val compiledCss = new FileOutputStream(new File(outputDir + "/"+compiledCssName+".css"))
         val sw = new OutputStreamWriter(compiledCss, "utf-8")
-        
-        val compiled = printCss(styles, logger)
+
+        val compiled = printCss(styles map sourceDirFn, logger)
   
         def fixColor (s:String) = {
           if (s.length == 4) {
